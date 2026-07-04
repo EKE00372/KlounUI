@@ -1,0 +1,12 @@
+﻿## Interface: 100005
+## Title: |cff00ffffZir|rcon
+## Notes: Default Addon settings.
+## Version: 1.0
+## OptionalDeps: LibStub, Bigwigs
+## X-Credits: funkehdude, Phanx, oscarucb, nbluewiz, p3lim, Siweia, HopeASD, Paopao001
+
+RuriWigs.lua
+
+SetBW.lua
+SetMSBT.lua
+
