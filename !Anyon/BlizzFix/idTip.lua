@@ -1,4 +1,9 @@
-local addonName = ...
+local addon, ns = ... 
+local C, F, G, L = unpack(ns)
+
+local PRIMARY_ID = true		-- SpellID, ItemID, NPC ID, QuestID, CurrencyID
+local OTHER_ID = true		-- Other IDs
+local SECONDARY_ID = false	-- BonusID, TraitNodeID, TraitEntryID, TraitDefinitionID
 
 local GetSpellTexture = (C_Spell and C_Spell.GetSpellTexture) and C_Spell.GetSpellTexture or GetSpellTexture
 local GetItemIconByID = (C_Item and C_Item.GetItemIconByID) and C_Item.GetItemIconByID or GetItemIconByID
@@ -39,9 +44,26 @@ local kinds = {
   traitdef = "TraitDefinitionID",
 }
 
-local defaultDisabledKinds = {
-  "bonus", "traitnode", "traitentry", "traitdef",
+local primaryKinds = {
+  spell = true,
+  item = true,
+  unit = true,
+  quest = true,
+  currency = true,
 }
+
+local bonusTraitKinds = {
+  bonus = true,
+  traitnode = true,
+  traitentry = true,
+  traitdef = true,
+}
+
+local function isKindEnabled(kind)
+  if primaryKinds[kind] then return PRIMARY_ID end
+  if bonusTraitKinds[kind] then return SECONDARY_ID end
+  return OTHER_ID
+end
 
 -- https://warcraft.wiki.gg/wiki/Struct_TooltipData
 -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_APIDocumentationGenerated/TooltipInfoSharedDocumentation.lua
@@ -82,10 +104,6 @@ local function contains(table, element)
   return false
 end
 
-local function configKey(key)
-  return key .. "Enabled"
-end
-
 local function hook(table, fn, cb)
   if table and table[fn] then
     hooksecurefunc(table, fn, cb)
@@ -110,7 +128,8 @@ end
 local function addLine(tooltip, id, kind)
   if isSecret(id) then return end
   if not id or id == "" or not tooltip or not tooltip.GetName then return end
-  if idTipConfig and (not idTipConfig.enabled or not idTipConfig[configKey(kind)]) then return end
+  if not kinds[kind] then return end
+  if not isKindEnabled(kind) then return end
 
   -- Abort when tooltip has no name or when :GetName throws
   local ok, name = pcall(getTooltipName, tooltip)
@@ -581,30 +600,7 @@ f:SetScript("OnEvent", function(_, event, addon)
     return
   end
   if loggedIn then scanAddonTooltips() end
-  if addon == addonName then
-    local defaults = {
-      enabled = true,
-      version = 1,
-    }
-
-    if not idTipConfig then idTipConfig = {} end
-
-    for key, _ in pairs(defaults) do
-      if type(idTipConfig[key]) ~= type(defaults[key]) then idTipConfig[key] = defaults[key] end
-    end
-
-    for key, _ in pairs(kinds) do
-      if type(idTipConfig[configKey(key)]) ~= "boolean" then
-        idTipConfig[configKey(key)] = not contains(defaultDisabledKinds, key)
-      end
-    end
-
-    -- config migrations
-    if idTipConfig.version == 1 then -- v1 to v2 - disable bonus kind
-      idTipConfig[configKey("bonus")] = false
-      idTipConfig.version = 2
-    end
-  elseif addon == "Blizzard_AchievementUI" then
+  if addon == "Blizzard_AchievementUI" then
     if AchievementTemplateMixin then
       -- dragonflight
       hook(AchievementTemplateMixin, "OnEnter", achievementOnEnter)
@@ -683,74 +679,3 @@ f:SetScript("OnEvent", function(_, event, addon)
     end)
   end
 end)
-
--------------------------------------------------------------------------------
--- Options panel
--------------------------------------------------------------------------------
-
-local panel = CreateFrame("Frame")
-panel.name = addonName
-panel:Hide()
-
-panel:SetScript("OnShow", function()
-  local function createCheckbox(label, key)
-    local checkBox = CreateFrame("CheckButton", addonName .. "Check" .. label, panel, "ChatConfigCheckButtonTemplate")
-    checkBox:SetChecked(idTipConfig[key])
-    checkBox:HookScript("OnClick", function(self)
-      local checked = self:GetChecked()
-      idTipConfig[key] = checked
-    end)
-    checkBox.Text:SetText(label)
-    return checkBox
-  end
-
-  local title = panel:CreateFontString("ARTWORK", nil, "GameFontNormalLarge")
-  title:SetPoint("TOPLEFT", 16, -16)
-  title:SetText(addonName)
-
-  local enabledCheckBox = createCheckbox("Enabled", "enabled")
-  enabledCheckBox:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -16)
-
-  local kindsTitle = panel:CreateFontString("ARTWORK", nil, "GameFontNormal")
-  kindsTitle:SetPoint("TOPLEFT", enabledCheckBox, "BOTTOMLEFT", 0, -16)
-  kindsTitle:SetText("Types")
-
-  local index = 0
-  local rowHeight = 24
-  local columnWidth = 150
-  local rowNum = 10
-
-  local keys = {}
-  for key in pairs(kinds) do table.insert(keys, key) end
-  table.sort(keys)
-
-  for _, key in pairs(keys) do
-    local checkBox = createCheckbox(kinds[key], configKey(key))
-    local columnIndex = math.floor(index / rowNum)
-    local offsetRight = columnIndex * columnWidth
-    local offsetUp = -(index * rowHeight) + (rowHeight * rowNum  * columnIndex) - 16
-    checkBox:SetPoint("TOPLEFT", kindsTitle, "BOTTOMLEFT", offsetRight, offsetUp)
-    index = index + 1
-  end
-
-  panel:SetScript("OnShow", nil)
-end)
-
-local categoryId = nil
-if InterfaceOptions_AddCategory then
-  InterfaceOptions_AddCategory(panel)
-elseif Settings and Settings.RegisterAddOnCategory and Settings.RegisterCanvasLayoutCategory then
-  local category = Settings.RegisterCanvasLayoutCategory(panel, panel.name)
-  categoryId = category.ID
-  Settings.RegisterAddOnCategory(category);
-end
-
-SLASH_IDTIP1 = "/idtip"
-function SlashCmdList.IDTIP()
-  if InterfaceOptionsFrame_OpenToCategory then
-    InterfaceOptionsFrame_OpenToCategory(panel)
-    InterfaceOptionsFrame_OpenToCategory(panel)
-  elseif categoryId then
-    Settings.OpenToCategory(categoryId)
-  end
-end

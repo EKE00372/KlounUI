@@ -13,9 +13,10 @@ local ceil = math.ceil
 local SetCVar = C_CVar.SetCVar
 
 local frame
-local pendingScale = false
 
+local pendingScale = false
 local function SetUIScale()
+	-- 戰鬥中延遲載入
 	if InCombatLockdown() then
 		pendingScale = true
 		frame:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -24,10 +25,11 @@ local function SetUIScale()
 	pendingScale = false
 	frame:UnregisterEvent("PLAYER_REGEN_ENABLED")
 
+	-- 取整
 	local _, height = GetPhysicalScreenSize()
-	--local scale = format("%.7f", 768/height)
 	local Scale = ceil((768/height) * 10000 + 0.5) / 10000
 
+	-- 縮放
 	SetCVar("useUiScale", "1")
 	if Scale >=1 then
 		-- 大於1就固定1
@@ -47,6 +49,7 @@ end
 
 local isScaling = false
 local function UpdatePixelScale(self, event)
+	-- 防止無限循環
 	if isScaling then return end
 
 	if event == "PLAYER_REGEN_ENABLED" and not pendingScale then
