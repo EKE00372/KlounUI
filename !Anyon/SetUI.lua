@@ -478,7 +478,6 @@ local function SetCVarCfg()
 	
 	--[[ 顯示 ]]--
 	
-	SetCVar("hideAdventureJournalAlerts", 0)	-- *地圖冒險指南提示：0開
 	SetCVar("showTutorials", 0)					-- 教學說明：1開
 	SetCVar("showNPETutorials", 0)				-- #新內容(這並沒有什麼鳥用)：1開
 
@@ -884,11 +883,19 @@ local function DefaultSettings()
 	SetCVar("guildRosterView", "playerStatus")			-- 公會預設排列方式：玩家狀態
 	SetAutoDeclineGuildInvites(false)					-- 不要自動拒絕公會邀請
 	
-	-- Collection: show alreadyknow
-	C_MountJournal.SetCollectedFilterSetting(2, false)	-- 座騎
-	C_ToyBox.SetUncollectedShown(false)					-- 玩具
-	C_PetJournal.SetFilterChecked(2)					-- 寵物
-	C_Heirloom.GetUncollectedHeirloomFilter(2)			-- 傳家寶
+	-- Collection: only show collected
+	C_MountJournal.SetCollectedFilterSetting(LE_MOUNT_JOURNAL_FILTER_COLLECTED, true)		-- 座騎：顯示已收集
+	C_MountJournal.SetCollectedFilterSetting(LE_MOUNT_JOURNAL_FILTER_NOT_COLLECTED, false)	-- 座騎：隱藏未收集
+	C_PetJournal.SetFilterChecked(LE_PET_JOURNAL_FILTER_COLLECTED, true)					-- 寵物：顯示已收集
+	C_PetJournal.SetFilterChecked(LE_PET_JOURNAL_FILTER_NOT_COLLECTED, false)				-- 寵物：隱藏未收集
+	C_ToyBox.SetCollectedShown(true)														-- 玩具：顯示已收集
+	C_ToyBox.SetUncollectedShown(false)													-- 玩具：隱藏未收集
+	C_Heirloom.SetCollectedHeirloomFilter(true)											-- 傳家寶：顯示已收集
+	C_Heirloom.SetUncollectedHeirloomFilter(false)										-- 傳家寶：隱藏未收集
+	C_TransmogCollection.SetCollectedShown(true)											-- 外觀：顯示已收集
+	C_TransmogCollection.SetUncollectedShown(false)										-- 外觀：隱藏未收集
+	C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_COLLECTED, true)				-- 外觀套裝：顯示已收集
+	C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_UNCOLLECTED, false)			-- 外觀套裝：隱藏未收集
 	-- C_TransmogCollection.SetShowMissingSourceInItemTooltips(true)	-- 塑型未收集提示
 	
 	-- Fonts: globaly change quest fonts
