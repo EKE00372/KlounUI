@@ -20,14 +20,6 @@ local function OnEvent()
 	end
 end
 
--- if you're in Exile's Reach and level 1 this cvar gets automatically enabled
-hooksecurefunc("NPE_CheckTutorials", function()
-	if C_PlayerInfo.IsPlayerNPERestricted() and UnitLevel("player") == 1 then
-		print("HideTutorial: Disabling NPE tutorial, please disregard the Blizzard debug prints.")
-		SetCVar("showTutorials", 0)
-	end
-end)
-
 local f = CreateFrame("Frame")
 f:RegisterEvent("VARIABLES_LOADED")
 f:SetScript("OnEvent", OnEvent)
