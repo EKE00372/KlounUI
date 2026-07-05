@@ -1,5 +1,5 @@
-local addonName, ns = ...
-local C, F = ns[1], ns[2]
+local addon, ns = ... 
+local C, F, G, L = unpack(ns)
 
 local ADDON_TITLE = "!Anyon"
 
