@@ -12,36 +12,54 @@ if not C.SetUIScale then return end
 local ceil = math.ceil
 local SetCVar = C_CVar.SetCVar
 
+local frame
+local pendingScale = false
+
 local function SetUIScale()
+	if InCombatLockdown() then
+		pendingScale = true
+		frame:RegisterEvent("PLAYER_REGEN_ENABLED")
+		return
+	end
+	pendingScale = false
+	frame:UnregisterEvent("PLAYER_REGEN_ENABLED")
+
 	local _, height = GetPhysicalScreenSize()
 	--local scale = format("%.7f", 768/height)
 	local Scale = ceil((768/height) * 10000 + 0.5) / 10000
 
 	SetCVar("useUiScale", "1")
-	if Scale >=1 or Scale == 0.5 then
+	if Scale >=1 then
+		-- 大於1就固定1
 		SetCVar("uiScale", 1)
-	elseif (Scale >= 0.65) and (Scale < 1) then
+	elseif Scale >= 0.65 then
+		-- 使用 cvar 的區間
 		SetCVar("uiScale", Scale)
-	elseif (Scale < 0.65) and (Scale > 0.5) then
-		if not InCombatLockdown() then
-			SetCVar("uiScale", 1)
-			UIParent:SetScale(Scale)
-		end
+	elseif Scale > 0.5 then
+		-- 使用 UIParent 的區間： 小於0.65且大於0.5
+		SetCVar("uiScale", 1)
+		UIParent:SetScale(Scale)
 	else
+		-- 超高解析度：二倍縮放
 		SetCVar("uiScale", Scale*2)
 	end
 end
 
 local isScaling = false
-local function UpdatePixelScale()
+local function UpdatePixelScale(self, event)
 	if isScaling then return end
+
+	if event == "PLAYER_REGEN_ENABLED" and not pendingScale then
+		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+		return
+	end
 	
 	isScaling = true
 	SetUIScale()
 	isScaling = false
 end
 
-local frame = CreateFrame("Frame")
+frame = CreateFrame("Frame")
 	frame:RegisterEvent("PLAYER_LOGIN")
 	frame:RegisterEvent("UI_SCALE_CHANGED")
 	--frame:RegisterEvent("DISPLAY_SIZE_CHANGED")
