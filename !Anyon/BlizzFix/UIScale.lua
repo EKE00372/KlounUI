@@ -1,7 +1,7 @@
 local addon, ns = ... 
 local C, F, G, L = unpack(ns)
+local M = F.RegisterModule("UIScale", "UIScale")
 
-if not C.SetUIScale then return end
 --=================================================--
 -----------------    [[ Scale ]]    -----------------
 --=================================================--
@@ -12,58 +12,84 @@ if not C.SetUIScale then return end
 local ceil = math.ceil
 local SetCVar = C_CVar.SetCVar
 
-local frame
-
-local pendingScale = false
-local function SetUIScale()
-	-- 戰鬥中延遲載入
-	if InCombatLockdown() then
-		pendingScale = true
-		frame:RegisterEvent("PLAYER_REGEN_ENABLED")
-		return
-	end
-	pendingScale = false
-	frame:UnregisterEvent("PLAYER_REGEN_ENABLED")
-
-	-- 取整
+-- 計算並取整
+local function GetBasePixelScale()
 	local _, height = GetPhysicalScreenSize()
-	local Scale = ceil((768/height) * 10000 + 0.5) / 10000
+	if not height or height == 0 then
+		return UIParent and UIParent:GetScale() or 1
+	end
 
-	-- 縮放
-	SetCVar("useUiScale", "1")
-	if Scale >=1 then
-		-- 大於1就固定1
-		SetCVar("uiScale", 1)
+	return ceil((768/height) * 10000 + 0.5) / 10000
+end
+
+-- 全局 API：為 GUI tooltip 顯示目前解析度的最適縮放比
+F.GetUIScaleValue = function()
+	local Scale = GetBasePixelScale()
+
+	if Scale >= 1 then
+		return 1
 	elseif Scale >= 0.65 then
-		-- 使用 cvar 的區間
-		SetCVar("uiScale", Scale)
+		return Scale
 	elseif Scale > 0.5 then
-		-- 使用 UIParent 的區間： 小於0.65且大於0.5
-		SetCVar("uiScale", 1)
-		UIParent:SetScale(Scale)
+		return Scale
 	else
-		-- 超高解析度：二倍縮放
-		SetCVar("uiScale", Scale*2)
+		return Scale*2
 	end
 end
 
-local isScaling = false
-local function UpdatePixelScale(self, event)
+function M:OnEnable()
+	local frame
+
+	local pendingScale = false
+	local function SetUIScale()
+		-- 戰鬥中延遲載入
+		if InCombatLockdown() then
+			pendingScale = true
+			frame:RegisterEvent("PLAYER_REGEN_ENABLED")
+			return
+		end
+		pendingScale = false
+		frame:UnregisterEvent("PLAYER_REGEN_ENABLED")
+
+		-- 取得縮放值
+		local Scale = GetBasePixelScale()
+
+		-- 縮放
+		SetCVar("useUiScale", "1")
+		if Scale >=1 then
+			-- 大於1就固定1
+			SetCVar("uiScale", 1)
+		elseif Scale >= 0.65 then
+			-- 使用 cvar 的區間
+			SetCVar("uiScale", Scale)
+		elseif Scale > 0.5 then
+			-- 使用 UIParent 的區間： 小於0.65且大於0.5
+			SetCVar("uiScale", 1)
+			UIParent:SetScale(Scale)
+		else
+			-- 超高解析度：二倍縮放
+			SetCVar("uiScale", Scale*2)
+		end
+	end
+
 	-- 防止無限循環
-	if isScaling then return end
+	local isScaling = false
+	local function UpdatePixelScale(self, event)
+		if isScaling then return end
 
-	if event == "PLAYER_REGEN_ENABLED" and not pendingScale then
-		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
-		return
+		if event == "PLAYER_REGEN_ENABLED" and not pendingScale then
+			self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+			return
+		end
+		
+		isScaling = true
+		SetUIScale()
+		isScaling = false
 	end
-	
-	isScaling = true
-	SetUIScale()
-	isScaling = false
-end
 
-frame = CreateFrame("Frame")
-	frame:RegisterEvent("PLAYER_LOGIN")
-	frame:RegisterEvent("UI_SCALE_CHANGED")
-	--frame:RegisterEvent("DISPLAY_SIZE_CHANGED")
-	frame:SetScript("OnEvent", UpdatePixelScale)
+	frame = CreateFrame("Frame")
+		frame:RegisterEvent("PLAYER_LOGIN")
+		frame:RegisterEvent("UI_SCALE_CHANGED")
+		--frame:RegisterEvent("DISPLAY_SIZE_CHANGED")
+		frame:SetScript("OnEvent", UpdatePixelScale)
+end
