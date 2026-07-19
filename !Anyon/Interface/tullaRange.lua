@@ -1,3 +1,15 @@
+local addon, ns = ...
+local C, F, G, L = unpack(ns)
+local M = F.RegisterModule("tullaRange", "tullaRange")
+
+function M:OnEnable()
+	-- Init.lua 會在 AnyonDB 同步後依 tullaRange 設定呼叫這裡。
+
+local C_ActionBar_IsActionInRange = C_ActionBar and C_ActionBar.IsActionInRange
+local C_ActionBar_IsUsableAction = C_ActionBar and C_ActionBar.IsUsableAction
+local IsActionInRange = IsActionInRange
+local IsUsableAction = IsUsableAction
+
 --==================================================--
 -----------------    [[ Config ]]    -----------------
 --==================================================--
@@ -33,10 +45,22 @@ local function GetActionState(slot)
     end
 
     if isUsable == nil then
-        isUsable, notEnoughMana = IsUsableAction(slot)
+        -- 12.1 的快捷列可用性 API 已搬到 C_ActionBar；舊全域只作相容 fallback。
+        if C_ActionBar_IsUsableAction then
+            isUsable, notEnoughMana = C_ActionBar_IsUsableAction(slot)
+        elseif IsUsableAction then
+            isUsable, notEnoughMana = IsUsableAction(slot)
+        end
     end
 
-    local outOfRange = IsActionInRange(slot) == false
+    local inRange
+    if C_ActionBar_IsActionInRange then
+        inRange = C_ActionBar_IsActionInRange(slot)
+    elseif IsActionInRange then
+        inRange = IsActionInRange(slot)
+    end
+
+    local outOfRange = inRange == false
     if isUsable then
         return outOfRange and "oor" or "normal", outOfRange
     end
@@ -80,6 +104,8 @@ end
 --==================================================--
 
 local function actionButton_Update(button)
+    if not button or not button.action then return end
+
     local iconState, outOfRange = GetActionState(button.action)
     states[button.icon] = iconState
     ApplyColor(button.icon, iconState)
@@ -90,7 +116,11 @@ local function actionButton_Update(button)
 end
 
 local function actionButton_UpdateRange(button, checksRange, inRange)
-    if not registered[button] then return end
+    if not button then return end
+    if button.action then
+        actionButton_Update(button)
+        return
+    end
 
     local oor = checksRange and not inRange
 
@@ -131,11 +161,12 @@ local function actionButton_Register(button)
     if not registered[button] then
         hooksecurefunc(button, "UpdateUsable", actionButton_Update)
         registered[button] = true
+        actionButton_Update(button)
     end
 end
 
 local function petBar_Update(bar)
-    if not PetHasActionBar() then return end
+    if not bar or not bar.actionButtons or not PetHasActionBar() then return end
 
     for index, button in pairs(bar.actionButtons) do
         if button.icon:IsVisible() then
@@ -165,13 +196,10 @@ frame:SetScript("OnEvent", function(self, event, ...)
         -- 原生距離更新 Hook
         hooksecurefunc("ActionButton_UpdateRangeIndicator", actionButton_UpdateRange)
 
-        -- 停用暴雪預設的距離檢測
-        if ActionBarButtonUpdateFrame then
-            ActionBarButtonUpdateFrame:SetScript("OnUpdate", nil)
-        end
-
         -- 註冊寵物快捷列
-        hooksecurefunc(PetActionBar, "Update", petBar_Update)
+        if PetActionBar then
+            hooksecurefunc(PetActionBar, "Update", petBar_Update)
+        end
         self:RegisterUnitEvent("UNIT_POWER_UPDATE", "pet")
 
         -- 初次載入強制更新一次
@@ -179,10 +207,15 @@ frame:SetScript("OnEvent", function(self, event, ...)
             if ActionBarButtonEventsFrame then
                 ActionBarButtonEventsFrame:ForEachFrame(actionButton_Update)
             end
-            petBar_Update(PetActionBar)
+            if PetActionBar then
+                petBar_Update(PetActionBar)
+            end
         end)
 
     elseif event == "UNIT_POWER_UPDATE" then
-        petBar_Update(PetActionBar)
+        if PetActionBar then
+            petBar_Update(PetActionBar)
+        end
     end
 end)
+end

@@ -36,6 +36,9 @@ if GetLocale() == "zhTW" then
     L.tullaRange = "快捷鍵染色"
     L.tullaRange_Desc = "根據距離和資源染色快捷鍵按鈕。\n\n代碼引用：https://www.curseforge.com/wow/addons/tullarange"
 
+    L.BetterRaid = "團隊框架簡化"
+    L.BetterRaid_Desc = "隱藏暴雪團隊框架上的伺服器名稱和小隊標題。"
+
     L.HideTutorial = "隱藏教學提示"
     L.HideTutorial_Desc = "隱藏新角色的教學提示。\n\n代碼引用：https://www.curseforge.com/wow/addons/hidetutorial"
 
@@ -76,6 +79,9 @@ else
 
     L.tullaRange = "Colored actionbar"
     L.tullaRange_Desc = "Actionbar button color by range and resource, Source: https://www.curseforge.com/wow/addons/tullarange"
+
+    L.BetterRaid = "Better raidframes"
+    L.BetterRaid_Desc = "Hide realm names and group titles."
 
     L.HideTutorial = "Hide tutorial"
     L.HideTutorial_Desc = "Hide new character tutorial, Source: https://www.curseforge.com/wow/addons/hidetutorial"

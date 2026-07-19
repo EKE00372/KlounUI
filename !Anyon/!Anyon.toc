@@ -8,10 +8,11 @@
 
 #Libs\Libs.xml
 
-Config.lua
-Gui.lua
+Init.lua
+Locale.lua
+GUI.lua
 
-BlizzFix\BlizzFix.xml
+Interface\BlizzFix.xml
 
 Misc\Misc.xml
 #Combat\Combat.xml

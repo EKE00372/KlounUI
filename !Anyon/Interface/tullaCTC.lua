@@ -1,3 +1,10 @@
+local addon, ns = ... 
+local C, F, G, L = unpack(ns)
+local M = F.RegisterModule("tullaCTC", "tullaCTC")
+
+function M:OnEnable()
+	-- Init.lua 會在 AnyonDB 同步後依 tullaCTC 設定呼叫這裡。
+
 --=================================================--
 -----------------    [[ Notes ]]    -----------------
 --=================================================--
@@ -13,16 +20,16 @@
 -----------------    [[ Configs ]]    -----------------
 --===================================================--
 
-local FONT_FACE = STANDARD_TEXT_FONT
+local FONT_FACE = G.CTCFont
 local FONT_FLAGS = "OUTLINE"
-local FONT_SIZE = 0						-- 0 表示使用 Blizzard 自動字體大小
+local FONT_SIZE = 18					-- 固定套用到 tullaCTCfont 的字號
 
 -- 時間格式切換門檻
 local TENTHS_THRESHOLD = 2.5			-- 小於 2.5 秒顯示小數點
-local MMSS_THRESHOLD = 100				-- 100 秒起顯示 mm:ss
-local MINUTES_THRESHOLD = 300.5			-- 300 秒後顯示兩位數分鐘
-local HOURS_THRESHOLD = 3600			-- 60 分鐘起顯示兩位數小時
-local DAYS_THRESHOLD = 86400			-- 24 小時起顯示天數
+local MMSS_THRESHOLD = 100				-- 大於 100 秒顯示 mm:ss
+local MINUTES_THRESHOLD = 300.5			-- 大於 300 秒顯示分鐘
+local HOURS_THRESHOLD = 3600			-- 超過 60 分鐘顯示小時
+local DAYS_THRESHOLD = 86400			-- 超過 24 小時顯示天數
 local ROUNDING_MODE = "Nearest"         -- "Nearest","Up","Down"
 
 -- 文字顏色，格式為 RRGGBBAA
@@ -33,13 +40,20 @@ local TEXT_COLORS = {
 }
 local DEFAULT_TEXT_COLOR = "AAAAAAFF"
 
+-- 建立字型
+local cooldownFont = CreateFont("tullaCTCfont")
+cooldownFont:SetFont(FONT_FACE, FONT_SIZE, FONT_FLAGS)
+cooldownFont:SetShadowColor(1, 1, 1, 0)
+cooldownFont:SetShadowOffset(0, 0)
+
 --===================================================--
 -----------------    [[ Globals ]]    -----------------
 --===================================================--
 
+-- 保留全域 API 供其他插件呼叫
 local AddonName = "tullaCTC"
 local Addon = _G[AddonName] or {}
-_G[AddonName] = Addon	-- 保留全域 API 供其他插件呼叫
+_G[AddonName] = Addon
 
 local MINUTE = 60
 local HOUR = MINUTE * 60
@@ -278,7 +292,6 @@ end
 --===================================================--
 
 local formatter
-local font
 
 local function getFormatter()
 	if not formatter then
@@ -295,26 +308,16 @@ local function styleCooldown(cooldown)
 	local text = cooldown:GetCountdownFontString()
 	if not text then return end
 
-	if not font then
-		font = FONT_FACE
-	end
-
-	if FONT_SIZE > 0 then
-		if not text:SetFont(font, FONT_SIZE, FONT_FLAGS) then
-			text:SetFont(STANDARD_TEXT_FONT, FONT_SIZE, FONT_FLAGS)
-		end
-	else
-		cooldown:SetCountdownFont(font)
-	end
+	cooldown:SetCountdownFormatter(getFormatter())
+	cooldown:SetCountdownFont("tullaCTCfont")
 
 	text:ClearAllPoints()
 	text:SetPoint("TOPLEFT", 1, -1)
-	text:SetJustifyH("CENTER")
+	text:SetJustifyH("LEFT")
+	text:SetJustifyV("TOP")
 
 	text:SetShadowColor(1, 1, 1, 0)
 	text:SetShadowOffset(0, 0)
-
-	cooldown:SetCountdownFormatter(getFormatter())
 end
 
 --==============================================================--
@@ -388,7 +391,6 @@ end
 -- 清空快取並重新套用
 function Addon:Refresh()
 	formatter = nil
-	font = nil
 
 	for _, cooldown in pairs(active) do
 		styleCooldown(cooldown)
@@ -430,3 +432,4 @@ end
 local EventWatcher = CreateFrame("Frame")
 EventWatcher:RegisterEvent("PLAYER_LOGIN")
 EventWatcher:SetScript("OnEvent", OnEvent)
+end
