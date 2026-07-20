@@ -8,8 +8,6 @@
 
 	<Script file="Interface\BetterRaid.lua"/>
 	<Script file="Interface\HideTutorial.lua"/>
-	
-	<!--Script file="Misc\SlashCMD.lua"/-->
 
 	<!--Script file="Interface\Actionbar.lua"/-->
 </Ui>

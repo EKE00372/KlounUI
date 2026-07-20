@@ -1,12 +1,14 @@
 local addon, ns = ...
 local C, F, G, L = unpack(ns)
 local M = F.RegisterModule("HideTutorial", "HideTutorial")
+local CreateFrame = CreateFrame
+local C_CVar = C_CVar
+
+-- Fallback values are used only if Blizzard globals are unavailable.
+local NUM_LE_FRAME_TUTORIALS = NUM_LE_FRAME_TUTORIALS or 163
+local NUM_LE_FRAME_TUTORIAL_ACCCOUNTS = NUM_LE_FRAME_TUTORIAL_ACCCOUNTS or 49
 
 function M:OnEnable()
-	-- Fallback values are used only if Blizzard globals are unavailable.
-	local NUM_LE_FRAME_TUTORIALS = NUM_LE_FRAME_TUTORIALS or 163
-	local NUM_LE_FRAME_TUTORIAL_ACCCOUNTS = NUM_LE_FRAME_TUTORIAL_ACCCOUNTS or 49
-
 	local function OnEvent()
 		C_CVar.SetCVar("showTutorials", 0)
 		C_CVar.SetCVar("showNPETutorials", 0)
