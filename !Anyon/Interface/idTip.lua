@@ -608,17 +608,10 @@ function M:OnEnable()
 	-- Events
 	-------------------------------------------------------------------------------
 
-	local loggedIn = false
 	local f = CreateFrame("frame")
 	f:RegisterEvent("ADDON_LOADED")
-	f:RegisterEvent("PLAYER_LOGIN")
-	f:SetScript("OnEvent", function(_, event, addon)
-		if event == "PLAYER_LOGIN" then
-			loggedIn = true
-			scanAddonTooltips()
-			return
-		end
-		if loggedIn then scanAddonTooltips() end
+	f:SetScript("OnEvent", function(_, _, addon)
+		scanAddonTooltips()
 		if addon == "Blizzard_AchievementUI" then
 			if AchievementTemplateMixin then
 				-- dragonflight
@@ -698,4 +691,7 @@ function M:OnEnable()
 			end)
 		end
 	end)
+
+	-- Init.lua 已經統一在 PLAYER_LOGIN 啟用模組，這裡直接掃描一次現有 tooltip。
+	scanAddonTooltips()
 end

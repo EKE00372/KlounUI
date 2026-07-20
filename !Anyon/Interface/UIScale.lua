@@ -88,8 +88,10 @@ function M:OnEnable()
 	end
 
 	frame = CreateFrame("Frame")
-		frame:RegisterEvent("PLAYER_LOGIN")
-		frame:RegisterEvent("UI_SCALE_CHANGED")
-		--frame:RegisterEvent("DISPLAY_SIZE_CHANGED")
-		frame:SetScript("OnEvent", UpdatePixelScale)
+	frame:RegisterEvent("UI_SCALE_CHANGED")
+	--frame:RegisterEvent("DISPLAY_SIZE_CHANGED")
+	frame:SetScript("OnEvent", UpdatePixelScale)
+
+	-- Init.lua 已經統一在 PLAYER_LOGIN 啟用模組，這裡直接先套用一次。
+	UpdatePixelScale(frame, "PLAYER_LOGIN")
 end

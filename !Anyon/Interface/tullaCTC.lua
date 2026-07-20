@@ -318,15 +318,6 @@ function M:OnEnable()
 		end
 	end
 
-	if IsLoggedIn() then
-		initialize()
-	else
-		local eventFrame = CreateFrame("Frame")
-		eventFrame:RegisterEvent("PLAYER_LOGIN")
-		eventFrame:SetScript("OnEvent", function(self)
-			initialize()
-			self:UnregisterEvent("PLAYER_LOGIN")
-		end)
-		self.eventFrame = eventFrame
-	end
+	-- Init.lua 已經統一在 PLAYER_LOGIN 啟用模組，這裡直接初始化冷卻文字。
+	initialize()
 end
