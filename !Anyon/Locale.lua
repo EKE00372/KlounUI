@@ -36,6 +36,9 @@ if GetLocale() == "zhTW" then
     L.tullaRange = "快捷鍵染色"
     L.tullaRange_Desc = "根據距離和資源染色快捷鍵按鈕。\n\n代碼引用：https://www.curseforge.com/wow/addons/tullarange"
 
+    L.MicroMenu = "彩色微型選單"
+    L.MicroMenu_Desc = "扁平風格的彩色微型選單，滑鼠指向淡入淡出，並隱藏背包欄。"
+
     L.BetterRaid = "團隊框架簡化"
     L.BetterRaid_Desc = "隱藏暴雪團隊框架上的伺服器名稱和小隊標題。"
 
@@ -80,6 +83,9 @@ else
     L.tullaRange = "Colored actionbar"
     L.tullaRange_Desc = "Actionbar button color by range and resource, Source: https://www.curseforge.com/wow/addons/tullarange"
 
+    L.MicroMenu = "Colorful micro menu"
+    L.MicroMenu_Desc = "Colorful micro menu with mouseover fadin, also hide bagsbar."
+    
     L.BetterRaid = "Better raidframes"
     L.BetterRaid_Desc = "Hide realm names and group titles."
 

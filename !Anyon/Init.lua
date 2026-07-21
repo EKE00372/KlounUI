@@ -52,6 +52,7 @@ local TextureFolder = MediaFolder.."Texture\\"
 		["idTip_Opt3"] = false,
 		["tullaCTC"] = false,
 		["tullaRange"] = false,
+		["MicroMenu"] = true,
 		["BetterRaid"] = false,
 		["HideTutorial"] = true,
 
