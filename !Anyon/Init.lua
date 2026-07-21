@@ -55,6 +55,7 @@ local TextureFolder = MediaFolder.."Texture\\"
 		["MicroMenu"] = true,
 		["BetterRaid"] = false,
 		["HideTutorial"] = true,
+		["TalkingHeadMode"] = 1,
 
 		["AutoInvite"] = false,
 		["AutoLog"] = true,
