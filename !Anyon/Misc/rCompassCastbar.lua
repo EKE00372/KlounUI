@@ -8,7 +8,6 @@ local C_Spell_GetSpellCooldown = C_Spell.GetSpellCooldown
 local CreateFrame = CreateFrame
 local GetCursorPosition = GetCursorPosition
 local GetTime = GetTime
-local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 local ipairs = ipairs
@@ -59,46 +58,6 @@ local RING_CONFIG = {
 			texture = TEXTURE_PATH.."compass-rose-spark.tga",
 		},
 	},
-	target = {
-		scale = 0.2,
-		background = {
-			enabled = false,
-			color = {0.4, 0.3, 0, 0.8},
-			blendMode = "ADD",
-			texture = TEXTURE_PATH.."compass-rose-bright.tga",
-		},
-		ring = {
-			color = {1, 0, 0, 1},
-			blendMode = "ADD",
-			texture = TEXTURE_PATH.."compass-rose-ring-bright.tga",
-		},
-		spark = {
-			enabled = true,
-			color = {1, 1, 1},
-			blendMode = "ADD",
-			texture = TEXTURE_PATH.."compass-rose-spark.tga",
-		},
-	},
-	focus = {
-		scale = 0.15,
-		background = {
-			enabled = false,
-			color = {0.4, 0.3, 0, 0.8},
-			blendMode = "ADD",
-			texture = TEXTURE_PATH.."compass-rose-bright.tga",
-		},
-		ring = {
-			color = {0, 0.5, 1, 1},
-			blendMode = "ADD",
-			texture = TEXTURE_PATH.."compass-rose-ring-bright.tga",
-		},
-		spark = {
-			enabled = true,
-			color = {1, 1, 1},
-			blendMode = "ADD",
-			texture = TEXTURE_PATH.."compass-rose-spark.tga",
-		},
-	},
 	gcd = {
 		scale = 0.26,
 		background = {
@@ -128,16 +87,10 @@ local function DisableRing(frame)
 	frame:Hide()
 end
 
-local function RefreshUnitCast(frame)
-	local name, _, _, startTimeMS, endTimeMS = UnitCastingInfo(frame.unit)
+local function RefreshPlayerCast(frame)
+	local name, _, _, startTimeMS, endTimeMS = UnitCastingInfo("player")
 	if not name then
-		local isEmpowered, numStages
-		name, _, _, startTimeMS, endTimeMS, _, _, _, isEmpowered, numStages = UnitChannelInfo(frame.unit)
-
-		-- 12.x 原生施法條會把蓄力法術停在最高階段後的可維持時間也算進去
-		if isEmpowered and numStages and numStages > 0 and GetUnitEmpowerHoldAtMaxTime then
-			endTimeMS = endTimeMS + GetUnitEmpowerHoldAtMaxTime(frame.unit)
-		end
+		name, _, _, startTimeMS, endTimeMS = UnitChannelInfo("player")
 	end
 
 	if not name or not startTimeMS or not endTimeMS or endTimeMS <= startTimeMS then
@@ -151,7 +104,11 @@ end
 
 local function RefreshGCD(frame)
 	local cooldownInfo = C_Spell_GetSpellCooldown(GCD_SPELL_ID)
-	if not cooldownInfo or not cooldownInfo.duration or cooldownInfo.duration <= 0 then
+	if not cooldownInfo or not cooldownInfo.startTime or not cooldownInfo.duration then
+		return false
+	end
+
+	if cooldownInfo.duration <= 0 then
 		return false
 	end
 
@@ -161,7 +118,11 @@ local function RefreshGCD(frame)
 end
 
 local function RefreshRing(frame)
-	return frame.unit == "gcd" and RefreshGCD(frame) or RefreshUnitCast(frame)
+	if frame.unit == "gcd" then
+		return RefreshGCD(frame)
+	end
+
+	return RefreshPlayerCast(frame)
 end
 
 local function UpdateCursorPosition(frame)
@@ -268,19 +229,13 @@ local function CreateRingHalf(parent, config, side)
 	return ring
 end
 
-local function RegisterUnitEvents(frame, unit)
+local function RegisterPlayerEvents(frame)
 	for _, event in ipairs(CAST_EVENTS) do
-		frame:RegisterUnitEvent(event, unit)
+		frame:RegisterUnitEvent(event, "player")
 	end
 
 	for event in pairs(STOP_EVENTS) do
-		frame:RegisterUnitEvent(event, unit)
-	end
-
-	if unit == "target" then
-		frame:RegisterEvent("PLAYER_TARGET_CHANGED")
-	elseif unit == "focus" then
-		frame:RegisterEvent("PLAYER_FOCUS_CHANGED")
+		frame:RegisterUnitEvent(event, "player")
 	end
 end
 
@@ -322,7 +277,7 @@ local function CreateCompassCastbar(unit, config)
 	if unit == "gcd" then
 		RegisterGCDEvents(frame)
 	else
-		RegisterUnitEvents(frame, unit)
+		RegisterPlayerEvents(frame)
 	end
 
 	frame:SetScript("OnEvent", OnEvent)
