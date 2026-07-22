@@ -45,19 +45,35 @@ if GetLocale() == "zhTW" then
     L.HideTutorial = "隱藏教學提示"
     L.HideTutorial_Desc = "隱藏新角色的教學提示。\n\n代碼引用：https://www.curseforge.com/wow/addons/hidetutorial"
 
+    L.DragEmAll = "框體自由拖動"
+    L.DragEmAll_Desc = "允許部分暴雪面板直接拖動。\n\n代碼引用：https://github.com/siweia/NDui/blob/master/Interface/AddOns/NDui/Plugins/DragEmAll.lua"
+
+    L.TalkingHead = "對話頭像"
+    L.TalkingHead_Desc = "調整暴雪的對話頭像框體。"
+    L.TalkingHeadMode_Opt1 = "縮放 60%"
+    L.TalkingHeadMode_Opt1Desc = "保留對話頭像和語音，但將框體縮小為 60%。"
+    L.TalkingHeadMode_Opt2 = "隱藏"
+    L.TalkingHeadMode_Opt2Desc = "隱藏對話頭像並停止對話語音。"
+
     -- misc
 
     L.AutoInvite = "自動邀請"
-    L.AutoInvite_Desc = "密語 111 +++ 自動邀請組隊"
+    L.AutoInvite_Desc = "密語自動邀請：\nAlt + 左鍵：組隊邀請\nCtrl + 左鍵：公會邀請\n\n密語 111/+++/inv\n自動組隊邀請\n\n密語 g++/ginv/加公會/加公会\n跳出確認視窗後公會邀請"
 
     L.AutoLog = "自動戰鬥紀錄"
-    L.AutoLog_Desc = "在團隊副本和傳奇地城自動啟用戰鬥紀錄"
+    L.AutoLog_Desc = "在團隊副本和傳奇地城自動啟用戰鬥紀錄。"
 
     L.AutoShot = "自動截圖"
     L.AutoShot_Desc = "等級提升、獲得成就、完成限時地城和死亡時自動截圖。"
 
+    L.CompassCastbar = "羅盤施法條"
+    L.CompassCastbar_Desc = "滑鼠位置顯示羅盤樣式的施法條。\n\n代碼引用：https://www.wowinterface.com/downloads/info24278-rCompassCastbar.html"
+
+    L.ShiftRight = "Shift 右鍵存取"
+    L.ShiftRight_Desc = "背包或銀行物品可 Shift + 右鍵點擊批量移動。\n\n代碼引用：https://www.curseforge.com/wow/addons/shift-right"
+
     L.SnowfallCursor = "游標閃光"
-    L.SnowfallCursor_Desc = "滑鼠游標閃光\n\n代碼引用：https://www.wowinterface.com/downloads/info15693-SnowfallCursor.html"
+    L.SnowfallCursor_Desc = "滑鼠游標移動時閃光。\n\n代碼引用：https://www.wowinterface.com/downloads/info15693-SnowfallCursor.html"
 
     L.ReloadUI = "重載介面"
     L.ReloadUI_Desc = "重載介面以套用設定。"
@@ -69,7 +85,7 @@ else
     L.UIScale_Desc = "Auto UI Scale for pixel perfect.\nCurrent best scale: %s%%"
 
     L.idTip = "IDs"
-    L.idTip_Desc = "Show IDs on tooltip, Source: https://www.curseforge.com/wow/addons/idtip"
+    L.idTip_Desc = "Show IDs on tooltip.\n\nSource: https://www.curseforge.com/wow/addons/idtip"
     L.idTip_Opt1 = "Main ID"
     L.idTip_Opt1Desc = "SpellID, ItemID, NPC ID, QuestID, AchievementID, CurrencyID, MacroID, MountID, IconID"
     L.idTip_Opt2 = "Other ID"
@@ -78,10 +94,10 @@ else
     L.idTip_Opt3Desc = "BonusID, TraitNodeID, TraitEntryID, TraitDefinitionID"
 
     L.tullaCTC = "Cooldown Text"
-    L.tullaCTC_Desc = "Actionbar cooldown and aura time text, Source: https://www.curseforge.com/wow/addons/tullactc"
+    L.tullaCTC_Desc = "Actionbar cooldown and aura time text.\n\nSource: https://www.curseforge.com/wow/addons/tullactc"
 
     L.tullaRange = "Colored actionbar"
-    L.tullaRange_Desc = "Actionbar button color by range and resource, Source: https://www.curseforge.com/wow/addons/tullarange"
+    L.tullaRange_Desc = "Actionbar button color by range and resource.\n\nSource: https://www.curseforge.com/wow/addons/tullarange"
 
     L.MicroMenu = "Colorful micro menu"
     L.MicroMenu_Desc = "Colorful micro menu with mouseover fadin, also hide bagsbar."
@@ -90,12 +106,24 @@ else
     L.BetterRaid_Desc = "Hide realm names and group titles."
 
     L.HideTutorial = "Hide tutorial"
-    L.HideTutorial_Desc = "Hide new character tutorial, Source: https://www.curseforge.com/wow/addons/hidetutorial"
+    L.HideTutorial_Desc = "Hide new character tutorial.\n\nSource: https://www.curseforge.com/wow/addons/hidetutorial"
+
+    L.DragEmAll = "Movable frames"
+    L.DragEmAll_Desc = "Allow some Blizzard panels to be dragged directly.\n\nSource: https://github.com/siweia/NDui/blob/master/Interface/AddOns/NDui/Plugins/DragEmAll.lua"
+
+    L.TalkingHead = "Talking Head"
+    L.TalkingHead_Desc = "Adjust the Blizzard Talking Head frame."
+    L.TalkingHeadMode_Opt1 = "Scale 60%"
+    L.TalkingHeadMode_Opt1Desc = "Keep the Talking Head and voice, but scale the frame to 60%."
+    L.TalkingHeadMode_Opt2 = "Hide"
+    L.TalkingHeadMode_Opt2Desc = "Hide the Talking Head frame and stop its voice."
 
     -- misc
 
     L.AutoInvite = "Auto Invite"
-    L.AutoInvite_Desc = "Msg 111 +++ auto invite"
+    L.AutoInvite_Desc = "Msg auto invite:\n"
+        L.AutoInvite_Desc = "Msg auto invite:\nAlt + Left click: group invite\nCtrl + Left click: Guild invite\nWhisper 111/+++/inv: Auto group invite\nWhisper g++/ginv: Guild invite"
+
 
     L.AutoLog = "Auto combatlog"
     L.AutoLog_Desc = "Automatically enable combatlog in Raid and Mythic+ Dungeon."
@@ -103,8 +131,14 @@ else
     L.AutoShot = "Auto screenshot"
     L.AutoShot_Desc = "Automatically tack screenshot when you get achievement, level up, finish a dungeon and death."
 
+    L.CompassCastbar = "Compass castbar"
+    L.CompassCastbar_Desc = "Show compass ring castbar at the cursor.\n\nSource: https://www.wowinterface.com/downloads/info24278-rCompassCastbar.html"
+
+    L.ShiftRight = "Shift Right Click"
+    L.ShiftRight_Desc = "Shift + Right-click a bag or bank item to move all.\n\nSource: https://www.curseforge.com/wow/addons/shift-right"
+
     L.SnowfallCursor = "Cursor flash"
-    L.SnowfallCursor_Desc = "Cursor flash when moving, Source: https://www.wowinterface.com/downloads/info15693-SnowfallCursor.html"
+    L.SnowfallCursor_Desc = "Cursor flash when moving.\n\nSource: https://www.wowinterface.com/downloads/info15693-SnowfallCursor.html"
 
     L.ReloadUI = "Reload UI"
     L.ReloadUI_Desc = "Reload to apply settings."

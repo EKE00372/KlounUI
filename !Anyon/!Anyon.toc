@@ -12,7 +12,7 @@ Init.lua
 Locale.lua
 GUI.lua
 
-Interface\BlizzFix.xml
+Interface\Interface.xml
 
 Misc\Misc.xml
 #Combat\Combat.xml
