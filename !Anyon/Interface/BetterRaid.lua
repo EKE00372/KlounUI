@@ -2,6 +2,11 @@ local addon, ns = ...
 local C, F, G, L = unpack(ns)
 local M = F.RegisterModule("BetterRaid", "BetterRaid")
 local Ambiguate = Ambiguate
+local type = type
+
+local function IsCompactGroupUnit(unit)
+	return unit == "player" or (type(unit) == "string" and (unit:match("^party%d+$") or unit:match("^raid%d+$")))
+end
 
 function M:OnEnable()
 	-------------------
@@ -11,6 +16,8 @@ function M:OnEnable()
 	local function RemoveRealmName(frame)
 		-- 防止污染
 		if frame:IsForbidden() or not frame.name then return end
+		-- 只處理隊伍和團隊框架
+		if not IsCompactGroupUnit(frame.unit) then return end
 		-- 標記給後續的暴雪更新流程使用
 		frame.hideRealmName = true
 		-- 跳過沒名字的框體
