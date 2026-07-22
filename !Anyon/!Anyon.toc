@@ -1,4 +1,4 @@
-﻿## Interface: 120100, 120005
+﻿## Interface: 120100, 120007
 ## Title: !|cff00ffffAny|ron
 ## Notes: They should be there, but they didn't: misc collect and default UI settings.
 ## Version: 1.0
@@ -13,7 +13,6 @@ Locale.lua
 GUI.lua
 
 Interface\Interface.xml
-
 Misc\Misc.xml
 #Combat\Combat.xml
 
