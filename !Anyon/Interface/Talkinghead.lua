@@ -2,12 +2,9 @@ local _, ns = ...
 local F = ns[2]
 local M = F.RegisterModule("TalkingHead", "TalkingHeadMode")
 
-local C_AddOns_IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local hooksecurefunc = hooksecurefunc
+local C_AddOns_IsAddOnLoaded, hooksecurefunc = C_AddOns.IsAddOnLoaded, hooksecurefunc
 
-local MODE_SCALE = 1
-local MODE_HIDE = 2
-local FRAME_SCALE = 0.6
+local MODE_SCALE, MODE_HIDE, FRAME_SCALE = 1, 2, 0.6
 
 -- 修改對話頭像
 local function ApplyTalkingHeadMode(frame)

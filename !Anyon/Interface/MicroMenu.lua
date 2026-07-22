@@ -4,17 +4,15 @@ local M = F.RegisterModule("MicroMenu", "MicroMenu")
 
 local _G = _G
 local ipairs, select = ipairs, select
+
 local C_Timer_After = C_Timer.After
-local UIFrameFadeIn = UIFrameFadeIn
-local UIFrameFadeOut = UIFrameFadeOut
-local UIFrameFadeRemoveFrame = UIFrameFadeRemoveFrame
-local UIFrameIsFading = UIFrameIsFading
+local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
+local UIFrameFadeRemoveFrame, UIFrameIsFading = UIFrameFadeRemoveFrame, UIFrameIsFading
 
 local MICRO_TEXTURE = [[Interface\AddOns\!Anyon\Media\UIMicroMenu2x.blp]]
 local INIT_DELAY = 3
 local FADE_IN_DURATION = 0.1
-local FADE_OUT_DURATION = 3
-local HOVER_CHECK_DELAY = 0.05
+local FADE_OUT_DURATION, HOVER_CHECK_DELAY = 3, 0.05
 
 local COLORS = {
 	Character = {0.35, 0.65, 1},

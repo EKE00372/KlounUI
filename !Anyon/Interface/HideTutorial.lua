@@ -1,8 +1,8 @@
 local addon, ns = ...
 local C, F, G, L = unpack(ns)
 local M = F.RegisterModule("HideTutorial", "HideTutorial")
-local CreateFrame = CreateFrame
 local C_CVar = C_CVar
+local CreateFrame = CreateFrame
 
 -- Fallback values are used only if Blizzard globals are unavailable.
 local NUM_LE_FRAME_TUTORIALS = NUM_LE_FRAME_TUTORIALS or 163

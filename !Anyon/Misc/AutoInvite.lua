@@ -2,26 +2,17 @@ local _, ns = ...
 local F = ns[2]
 local M = F.RegisterModule("AutoInvite", "AutoInvite")
 
-local format = string.format
-local strlower = string.lower
-local strmatch = string.match
+local format, strlower, strmatch = string.format, string.lower, string.match
 
-local BNInviteFriend = BNInviteFriend
-local CanCooperateWithGameAccount = CanCooperateWithGameAccount
-local ChatEdit_ClearChat = ChatEdit_ClearChat
-local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
-local IsAltKeyDown = IsAltKeyDown
-local IsControlKeyDown = IsControlKeyDown
-local IsInGroup = IsInGroup
-local IsModifierKeyDown = IsModifierKeyDown
-local StaticPopup_Show = StaticPopup_Show
-local UnitIsGroupAssistant = UnitIsGroupAssistant
-local UnitIsGroupLeader = UnitIsGroupLeader
-
+local BNInviteFriend, CanCooperateWithGameAccount = BNInviteFriend, CanCooperateWithGameAccount
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
-local GuildInvite = C_GuildInfo.Invite
-local InviteToGroup = C_PartyInfo.InviteUnit
+local GuildInvite, InviteToGroup = C_GuildInfo.Invite, C_PartyInfo.InviteUnit
+
+local IsAltKeyDown, IsControlKeyDown, IsModifierKeyDown = IsAltKeyDown, IsControlKeyDown, IsModifierKeyDown
+local IsInGroup, UnitIsGroupAssistant, UnitIsGroupLeader = IsInGroup, UnitIsGroupAssistant, UnitIsGroupLeader
+
+local ChatEdit_ClearChat, StaticPopup_Show = ChatEdit_ClearChat, StaticPopup_Show
+local CreateFrame, hooksecurefunc = CreateFrame, hooksecurefunc
 
 local INVITE_KEYWORDS = {
 	["111"] = true,

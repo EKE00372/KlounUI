@@ -81,6 +81,19 @@ local MediaFolder = "Interface\\AddOns\\!Anyon\\Media\\"
 		return xpcall(callback, geterrorhandler(), ...)
 	end
 
+--[[
+	local issecretvalue, issecrettable = issecretvalue, issecrettable
+
+	-- 統一判斷 12.x 的 secret value/table，之後需要時可給各模組共用。
+	F.IsSecret = function(value)
+		if type(value) == "table" then
+			return issecrettable and issecrettable(value) or false
+		end
+
+		return issecretvalue and issecretvalue(value) or false
+	end
+--]]
+
 ------------
 -- Events --
 ------------

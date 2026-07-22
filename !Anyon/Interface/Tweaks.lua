@@ -73,15 +73,9 @@ end
 
 do
 	local ipairs = ipairs
-	local ceil = math.ceil
-	local max = math.max
-	local min = math.min
-	local tinsert = table.insert
-	local wipe = table.wipe
-
-	local AnchorUtil = AnchorUtil
-	local CreateFrame = CreateFrame
-	local GridLayoutUtil = GridLayoutUtil
+	local ceil, max, min = math.ceil, math.max, math.min
+	local tinsert, wipe = table.insert, table.wipe
+	local AnchorUtil, CreateFrame, GridLayoutUtil = AnchorUtil, CreateFrame, GridLayoutUtil
 	local InCombatLockdown = InCombatLockdown
 
 	local layoutButtons = {}

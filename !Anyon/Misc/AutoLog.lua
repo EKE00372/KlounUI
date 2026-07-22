@@ -2,14 +2,11 @@ local _, ns = ...
 local F = ns[2]
 local M = F.RegisterModule("AutoLog", "AutoLog")
 
-local CreateFrame = CreateFrame
-local GetInstanceInfo = GetInstanceInfo
-local GetTime = GetTime
+local CreateFrame, GetInstanceInfo, GetTime = CreateFrame, GetInstanceInfo, GetTime
 local LoggingCombat = LoggingCombat
 local print = print
 
-local GetCVar = C_CVar.GetCVar
-local SetCVar = C_CVar.SetCVar
+local GetCVar, SetCVar = C_CVar.GetCVar, C_CVar.SetCVar
 
 local expirationTime
 

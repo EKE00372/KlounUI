@@ -9,11 +9,11 @@ local _, ns = ...
 local F = ns[2]
 local M = F.RegisterModule("DragEmAll", "DragEmAll")
 
-local C_AddOns_IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local _G = _G
-local pairs = pairs
-local type = type
+local pairs, type = pairs, type
 local string_gmatch = string.gmatch
+
+local C_AddOns_IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 -- false = 拖動該框體；true = 拖動父框體；字串 = 拖動指定框體
 

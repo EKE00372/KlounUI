@@ -41,11 +41,12 @@
 	-- 舊團隊快捷：/10n /10h /25n /25h
 ]]--
 
-local GetUnitSpeed = GetUnitSpeed
-local format, tostring = string.format, tostring
-local Ambiguate = Ambiguate
+local format = string.format
+local tostring = tostring
 
+local Ambiguate = Ambiguate
 local EnumerateFrames = EnumerateFrames
+local GetUnitSpeed = GetUnitSpeed
 local GetSpecializationInfo, SetSpecialization = GetSpecializationInfo, SetSpecialization
 
 local LoggingCombat, IsInInstance = LoggingCombat, IsInInstance

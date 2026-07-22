@@ -4,17 +4,12 @@ local M = F.RegisterModule("CompassCastbar", "CompassCastbar")
 
 -- rCompassCastbar by zork
 
+local ipairs, pairs, unpack = ipairs, pairs, unpack
+local math_min, math_rad = math.min, math.rad
+
 local C_Spell_GetSpellCooldown = C_Spell.GetSpellCooldown
-local CreateFrame = CreateFrame
-local GetCursorPosition = GetCursorPosition
-local GetTime = GetTime
-local UnitCastingInfo = UnitCastingInfo
-local UnitChannelInfo = UnitChannelInfo
-local ipairs = ipairs
-local pairs = pairs
-local math_min = math.min
-local math_rad = math.rad
-local unpack = unpack
+local CreateFrame, GetCursorPosition, GetTime = CreateFrame, GetCursorPosition, GetTime
+local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo
 
 local TEXTURE_PATH = "Interface\\AddOns\\!Anyon\\Media\\"
 local RING_SIZE = 512

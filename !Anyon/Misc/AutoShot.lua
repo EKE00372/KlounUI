@@ -1,8 +1,7 @@
 local addon, ns = ...
 local C, F, G, L = unpack(ns)
 local M = F.RegisterModule("AutoShot", "AutoShot")
-local CreateFrame = CreateFrame
-local Screenshot = Screenshot
+local CreateFrame, Screenshot = CreateFrame, Screenshot
 local C_Timer_After = C_Timer.After
 
 function M:OnEnable()

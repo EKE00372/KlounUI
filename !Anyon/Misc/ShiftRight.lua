@@ -2,20 +2,20 @@ local _, ns = ...
 local F = ns[2]
 local M = F.RegisterModule("ShiftRight", "ShiftRight")
 
+local pairs, type = pairs, type
+
+local C_AddOns_IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+local C_Timer_After = C_Timer.After
+
 local C_Container_GetContainerItemInfo = C_Container.GetContainerItemInfo
 local C_Container_GetContainerNumSlots = C_Container.GetContainerNumSlots
 local C_Container_UseContainerItem = C_Container.UseContainerItem
-local C_AddOns_IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local C_Timer_After = C_Timer.After
-local CursorHasItem = CursorHasItem
-local IsShiftKeyDown = IsShiftKeyDown
-local ItemLocation = ItemLocation
-local hooksecurefunc = hooksecurefunc
-local pairs = pairs
-local type = type
 
-local BACKPACK = Enum.BagIndex.Backpack
-local REAGENT_BAG = Enum.BagIndex.ReagentBag
+local CursorHasItem, ItemLocation = CursorHasItem, ItemLocation
+local IsShiftKeyDown = IsShiftKeyDown
+local hooksecurefunc = hooksecurefunc
+
+local BACKPACK, REAGENT_BAG = Enum.BagIndex.Backpack, Enum.BagIndex.ReagentBag
 local CHARACTER_BANK_FIRST = Enum.BagIndex.CharacterBankTab_1
 local CHARACTER_BANK_LAST = Enum.BagIndex.CharacterBankTab_6
 local ACCOUNT_BANK_FIRST = Enum.BagIndex.AccountBankTab_1

@@ -1,8 +1,7 @@
 local addon, ns = ... 
 local C, F, G, L = unpack(ns)
 local M = F.RegisterModule("SnowfallCursor", "SnowfallCursor")
-local CreateFrame = CreateFrame
-local GetCursorPosition = GetCursorPosition
+local CreateFrame, GetCursorPosition = CreateFrame, GetCursorPosition
 local min, sqrt = math.min, math.sqrt
 
 function M:OnEnable()

@@ -8,19 +8,14 @@ local M = F.RegisterModule("tullaCTC", "tullaCTC")
 -----------------    [[ Configs ]]    -----------------
 --===================================================--
 
-local FONT_NAME = "tullaCTCfont"
-local FONT_FACE = G.CTCFont
-local FONT_FLAGS = "OUTLINE"
-local FONT_SIZE = 18
+local FONT_NAME, FONT_FACE = "tullaCTCfont", G.CTCFont
+local FONT_FLAGS, FONT_SIZE = "OUTLINE", 18
 
 -- 時間格式：
 -- 小於 2.5 秒顯示小數；小於 90 秒顯示秒數；90 秒以上顯示分:秒；5 分鐘以上顯示分鐘。
-local TENTHS_THRESHOLD = 2.5
-local MMSS_THRESHOLD = 90
-local MINUTES_THRESHOLD = 300.5
-local HOURS_THRESHOLD = 3600
-local DAYS_THRESHOLD = 86400
-local ROUNDING_MODE = "Nearest"
+local TENTHS_THRESHOLD, MMSS_THRESHOLD = 2.5, 90
+local MINUTES_THRESHOLD, HOURS_THRESHOLD = 300.5, 3600
+local DAYS_THRESHOLD, ROUNDING_MODE = 86400, "Nearest"
 
 -- 文字顏色，threshold 是該顏色區間的結束秒數。
 local TEXT_COLORS = {
