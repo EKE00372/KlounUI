@@ -10,7 +10,7 @@ local UIFrameFadeOut = UIFrameFadeOut
 local UIFrameFadeRemoveFrame = UIFrameFadeRemoveFrame
 local UIFrameIsFading = UIFrameIsFading
 
-local MICRO_TEXTURE = [[Interface\AddOns\!Anyon\Media\Texture\UIMicroMenu2x.blp]]
+local MICRO_TEXTURE = [[Interface\AddOns\!Anyon\Media\UIMicroMenu2x.blp]]
 local INIT_DELAY = 3
 local FADE_IN_DURATION = 0.1
 local FADE_OUT_DURATION = 3

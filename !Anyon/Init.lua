@@ -11,9 +11,6 @@ local addon, ns = ...
 local C, F, G, L = unpack(ns)
 
 local MediaFolder = "Interface\\AddOns\\!Anyon\\Media\\"
-local FontFolder = MediaFolder.."Font\\"
-local SoundFolder = MediaFolder.."Sound\\"
-local TextureFolder = MediaFolder.."Texture\\"
 
 ----------------------
 -- Golbal and Media --
@@ -22,21 +19,21 @@ local TextureFolder = MediaFolder.."Texture\\"
 	G.Ccolors = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[select(2, UnitClass("player"))]
 	
 	G.BarTex = "Interface\\Buttons\\WHITE8X8"
-	G.GlowTex = TextureFolder.."glow.tga"
-	G.Resize = TextureFolder.."Resize.tga"
+	G.GlowTex = MediaFolder.."glow.tga"
+	G.Resize = MediaFolder.."Resize.tga"
 	
 	G.Mail = "Interface\\MINIMAP\\TRACKING\\Mailbox.blp"  -- "Interface\\HELPFRAME\\ReportLagIcon-Mail.blp"
-	G.Diff = TextureFolder.."difficulty.tga"
+	G.Diff = MediaFolder.."difficulty.tga"
 	G.Report = "Interface\\HelpFrame\\HelpIcon-ReportLag.blp"
 	
-	G.HealthWarning = SoundFolder.."HealthWarning.ogg" 
-	G.ManaWarning = SoundFolder.."ManaWarning.ogg" 
-	G.TauntBeep = SoundFolder.."TauntBeep.ogg" -- https://freesound.org/people/pan14/sounds/263128/
+	G.HealthWarning = MediaFolder.."HealthWarning.ogg" 
+	G.ManaWarning = MediaFolder.."ManaWarning.ogg" 
+	G.TauntBeep = MediaFolder.."TauntBeep.ogg" -- https://freesound.org/people/pan14/sounds/263128/
 	
-	G.SpotMe = TextureFolder.."NeonReticule-blue.tga"
+	G.SpotMe = MediaFolder.."NeonReticule-blue.tga"
 	
 	G.Font = STANDARD_TEXT_FONT
-	G.CTCFont = FontFolder.."Myriad Pro Semibold Condensed.ttf"
+	G.CTCFont = MediaFolder.."Myriad Pro Semibold Condensed.ttf"
 	G.FontSize = 14
 	G.FontFlag = "OUTLINE"
 
@@ -55,11 +52,14 @@ local TextureFolder = MediaFolder.."Texture\\"
 		["MicroMenu"] = true,
 		["BetterRaid"] = false,
 		["HideTutorial"] = true,
+		["DragEmAll"] = false,
 		["TalkingHeadMode"] = 1,
 
 		["AutoInvite"] = false,
 		["AutoLog"] = true,
 		["AutoShot"] = true,
+		["CompassCastbar"] = false,
+		["ShiftRight"] = true,
 		["SnowfallCursor"] = true,
 	}
 
