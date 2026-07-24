@@ -1,6 +1,8 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="Interface\UIScale.lua"/>
 	
+	<Script file="Interface\Auras.lua"/>
+	
 	<Script file="Interface\idTip.lua"/>
 	
 	<Script file="Interface\tullaCTC.lua"/>

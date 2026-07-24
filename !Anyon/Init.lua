@@ -20,6 +20,7 @@ local MediaFolder = "Interface\\AddOns\\!Anyon\\Media\\"
 	
 	G.BarTex = "Interface\\Buttons\\WHITE8X8"
 	G.GlowTex = MediaFolder.."glow.tga"
+	G.BorderTex = MediaFolder.."border.tga"
 	G.Resize = MediaFolder.."Resize.tga"
 	
 	G.Mail = "Interface\\MINIMAP\\TRACKING\\Mailbox.blp"  -- "Interface\\HELPFRAME\\ReportLagIcon-Mail.blp"
@@ -44,6 +45,7 @@ local MediaFolder = "Interface\\AddOns\\!Anyon\\Media\\"
 	C.defaultSettings = {
 
 		["UIScale"] = true,
+		["AuraFrames"] = true,
 		["idTip_Opt1"] = true,
 		["idTip_Opt2"] = false,
 		["idTip_Opt3"] = false,
@@ -61,6 +63,20 @@ local MediaFolder = "Interface\\AddOns\\!Anyon\\Media\\"
 		["CompassCastbar"] = false,
 		["ShiftRight"] = true,
 		["SnowfallCursor"] = true,
+	}
+
+	-- 從 oUF_Ruri 搬來的暴雪右上角玩家光環框架設定；這裡只放外觀、位置與排列。
+	C.Auras = {
+		BuffSize = 32,
+		BuffsPerRow = 16,
+		ReverseBuff = false,
+		DebuffSize = 36,
+		DebuffsPerRow = 10,
+		ReverseDebuff = false,
+		BuffPos = {"TOPRIGHT", UIParent, "TOPRIGHT", -10, -10},
+		Margin = 6,
+		CountFontSize = 14,
+		TimerFontSize = 14,
 	}
 
 ----------
@@ -349,6 +365,50 @@ local MediaFolder = "Interface\\AddOns\\!Anyon\\Media\\"
 			end
 		end
 		return false
+	end
+
+	-- 建立硬邊框和底色；目前給光環 icon 做一圈乾淨的黑底/細框。
+	F.CreateBD = function(parent, anchor, size, r, g, b, a1, a2)
+		anchor = anchor or parent
+		size = size or 1
+
+		local border = CreateFrame("Frame", nil, parent, "BackdropTemplate")
+		local frameLevel = parent:GetFrameLevel()
+
+		border:ClearAllPoints()
+		border:SetPoint("TOPLEFT", anchor, "TOPLEFT", -size, size)
+		border:SetPoint("BOTTOMRIGHT", anchor, "BOTTOMRIGHT", size, -size)
+		border:SetFrameLevel(frameLevel > 2 and frameLevel - 2 or 0)
+		border:SetBackdrop({
+			bgFile = G.BarTex,
+			edgeFile = G.BarTex,
+			edgeSize = size,
+		})
+		border:SetBackdropColor(r or 0, g or 0, b or 0, a1 or 0)
+		border:SetBackdropBorderColor(r or 0, g or 0, b or 0, a2 or 1)
+
+		return border
+	end
+
+	-- 建立外圈陰影；和 CreateBD 分開是因為陰影用的是另一張 glow 材質。
+	F.CreateSD = function(parent, anchor, size, r, g, b, a)
+		anchor = anchor or parent
+		size = size or 3
+
+		local shadow = CreateFrame("Frame", nil, parent, "BackdropTemplate")
+		local frameLevel = parent:GetFrameLevel()
+
+		shadow:ClearAllPoints()
+		shadow:SetPoint("TOPLEFT", anchor, "TOPLEFT", -size, size)
+		shadow:SetPoint("BOTTOMRIGHT", anchor, "BOTTOMRIGHT", size, -size)
+		shadow:SetFrameLevel(frameLevel > 1 and frameLevel - 1 or 0)
+		shadow:SetBackdrop({
+			edgeFile = G.GlowTex,
+			edgeSize = size,
+		})
+		shadow:SetBackdropBorderColor(r or .05, g or .05, b or .05, a or 1)
+
+		return shadow
 	end
 	
 	
